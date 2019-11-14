@@ -1,15 +1,13 @@
 from django.db import models
+from django.contrib.auth.models import User
+
+class Restriction(models.Model):
+	name = models.CharField(max_length=20)
 
 class UserProfile(models.Model):
-	user = models.OneToOneField(User),
+	user = models.OneToOneField(User, on_delete=models.CASCADE),
 	profile_picture = models.ImageField(upload_to='thumbpath', blank=True),
 	restrictions = models.ManyToManyField(Restriction)
-
-class EventSubmission(models.Model):
-	user = models.ForeignKey(UserProfile, on_delete=models.CASCADE),
-	event = models.ForeignKey(Event, on_delete=models.CASCADE),
-	location = models.CharField(max_length=30)
-	preferences = models.ManyToManyField(Restriction)
 
 class Event(models.Model):
 	leader = models.ForeignKey(User, on_delete=models.CASCADE),
@@ -17,5 +15,8 @@ class Event(models.Model):
 	link = models.TextField(),
 	status = models.CharField(max_length=15)
 
-class Restriction(models.Model):
-	name = models.CharField(max_length=20)
+class EventSubmission(models.Model):
+	user = models.ForeignKey(UserProfile, on_delete=models.CASCADE),
+	event = models.ForeignKey(Event, on_delete=models.CASCADE),
+	location = models.CharField(max_length=30)
+	preferences = models.ManyToManyField(Restriction)
