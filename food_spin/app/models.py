@@ -1,25 +1,21 @@
 from django.db import models
-from django_mysql.models import SetCharField,
 
 class UserProfile(models.Model):
 	user = models.OneToOneField(User),
-	restrictions = SetTextField(
-		base_field=CharField(max_length=30)
-	),
 	profile_picture = models.ImageField(upload_to='thumbpath', blank=True),
-	friends = models.ManyToManyField(User)
+	restrictions = models.ManyToManyField(Restriction)
 
 class EventSubmission(models.Model):
-	user = models.OneToOneField(UserProfile),
-	event = models.OneToOneField(Event),
-	preferences = SetTextField(
-		base_field=CharField(max_length=30)
-	),
+	user = models.ForeignKey(UserProfile, on_delete=models.CASCADE),
+	event = models.ForeignKey(Event, on_delete=models.CASCADE),
 	location = models.CharField(max_length=30)
+	preferences = models.ManyToManyField(Restriction)
 
 class Event(models.Model):
-	leader = models.OneToOneField(User),
+	leader = models.ForeignKey(User, on_delete=models.CASCADE),
 	followers = models.ManyToManyField(User),
-	submissions = models.ManyToManyField(EventSubmission),
 	link = models.TextField(),
-	status = models.CharField(max_length=15) 
+	status = models.CharField(max_length=15)
+
+class Restriction(models.Model):
+	name = models.CharField(max_length=20)
