@@ -20,8 +20,8 @@ from app import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home),
-    path('spin', views.spin),
+    path('spin', views.spin, name='spin'),
     path('result', views.result),
-    path('signup', views.signup),
+    path('signup', views.SignUp.as_view(), name='signup'),
     path('pref', views.pref)
 ]
