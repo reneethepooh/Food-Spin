@@ -42,4 +42,6 @@ urlpatterns = [
         EventUniqueSlugDetailView.as_view(),
         name="event-slug",
     ),
+    path('login', views.login_request, name='login'),
+    path('logout', views.logout_request, name='logout')
 ]
