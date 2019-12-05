@@ -10,6 +10,7 @@ class UserProfile(models.Model):
 	restrictions = models.ManyToManyField(Restriction)
 
 class Event(models.Model):
+	name = models.CharField(max_length=30),
 	leader = models.ForeignKey(User, on_delete=models.CASCADE),
 	followers = models.ManyToManyField(User),
 	link = models.TextField(),
