@@ -17,7 +17,7 @@ def signup(request):
 # def pref(request):
 # 	return render(request, '../templates/pref.html')
 
-def pref(request):
+def create_event(request):
     # if this is a POST request we need to process the form data
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
@@ -33,4 +33,4 @@ def pref(request):
     else:
         form = EventForm()
 
-    return render(request, '../templates/pref.html', {'form': form})
+    return render(request, '../templates/createevent.html', {'form': form})
