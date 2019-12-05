@@ -6,6 +6,7 @@ from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django.views import generic
 
+
 def home(request):
 	return render(request, '../templates/intro.html')
 
@@ -40,3 +41,7 @@ def create_event(request):
         form = EventForm()
 
     return render(request, '../templates/createevent.html', {'form': form})
+
+#class Event(DetailView):
+#    model = EventPkAndSlug
+#    query_pk_and_slug = False

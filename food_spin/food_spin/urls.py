@@ -16,7 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from app import views
+from django.urls import path
 
+#NEED TO IMPORT VIEWS HERE
+#from app.views import(
+#???the view of our event form
+#)
 
 
 urlpatterns = [
@@ -26,4 +31,15 @@ urlpatterns = [
     path('result', views.result),
     path('createevent', views.create_event),
     path('signup', views.SignUp.as_view(), name='signup'),
+    '''path(
+        "app/<int:pk>-<str:slug>/",
+        EventPkAndSlugDetailView.as_view(),
+        name="event-slug-detail",
+    ),'''
+    path(
+        "app/<str:slug>",
+        #This view should follow the event form view's name
+        EventUniqueSlugDetailView.as_view(),
+        name="event-slug",
+    ),
 ]
