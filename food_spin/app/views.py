@@ -1,7 +1,7 @@
 from django.http import HttpResponseRedirect
 from .EventForm import EventForm
 from django.shortcuts import render, redirect
-from django.contrib.auth import login, authenticate
+from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.urls import reverse_lazy
 from django.views import generic
@@ -21,6 +21,11 @@ class SignUp(generic.CreateView):
 	form_class = UserCreationForm
 	success_url = reverse_lazy('spin')
 	template_name = '../templates/signup.html'
+
+def logout_request(request):
+    logout(request)
+    messages.info(request, "Logged out successfully!")
+    return redirect("login")
 
 def login_request(request):
 	if request.method == 'POST':

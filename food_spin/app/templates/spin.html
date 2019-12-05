@@ -53,6 +53,8 @@
 </br></br>
 <div align = "right"><a href = "signup">Sign Up</a></div>
 <div align = "right"><a href = "login">Login</a></div>
-
+{% if user.is_authenticated %}
+<div align = "right"><a href = "logout">Logout</a></div>
+{% endif %}
 </body>
 </html>
