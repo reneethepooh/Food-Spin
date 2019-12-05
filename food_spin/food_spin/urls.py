@@ -17,8 +17,6 @@ from django.contrib import admin
 from django.urls import path
 from app import views
 
-
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home),
@@ -26,4 +24,5 @@ urlpatterns = [
     path('result', views.result),
     path('createevent', views.create_event),
     path('signup', views.SignUp.as_view(), name='signup'),
+    path('login', views.login_request, name='login')
 ]
