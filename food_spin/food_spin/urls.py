@@ -16,7 +16,12 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from app import views
+from django.urls import path
 
+#NEED TO IMPORT VIEWS HERE
+#from app.views import(
+#???the view of our event form
+#)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.home),
@@ -26,4 +31,3 @@ urlpatterns = [
     path('signup', views.SignUp.as_view(), name='signup'),
     path('login', views.login_request, name='login'),
     path('logout', views.logout_request, name='logout')
-]
