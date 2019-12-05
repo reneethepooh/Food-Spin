@@ -8,7 +8,7 @@ class EventForm(forms.Form):
     food_query=forms.CharField(label='food', max_length=100)
     restrictions=forms.CharField(label='restrictions', max_length=100)
     open_to_all=forms.BooleanField(label='opentoall',required=False)
-    gender_neutral=forms.BooleanFiel(label='gender_neutral',required=False)
+    gender_neutral=forms.BooleanField(label='gender_neutral',required=False)
     weel_chair=forms.BooleanField(label='weel_chair',required=False)
     waitlist=forms.BooleanField(label='waitlist',required=False)
     cashback=forms.BooleanField(label='cashback',required=False)
