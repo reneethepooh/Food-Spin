@@ -24,6 +24,6 @@ urlpatterns = [
     path('', views.home),
     path('spin', views.spin, name='spin'),
     path('result', views.result),
-    path('createevent', views.create_event)
+    path('createevent', views.create_event),
     path('signup', views.SignUp.as_view(), name='signup'),
 ]
