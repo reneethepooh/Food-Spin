@@ -13,10 +13,11 @@ class Event(models.Model):
 	leader = models.ForeignKey(User, on_delete=models.CASCADE),
 	followers = models.ManyToManyField(User),
 	link = models.TextField(),
-	status = models.CharField(max_length=15)
+	status = models.CharField(max_length=15),
+	location = models.CharField(max_length=30),
+	radius = models.IntegerField()
 
 class EventSubmission(models.Model):
 	user = models.ForeignKey(UserProfile, on_delete=models.CASCADE),
 	event = models.ForeignKey(Event, on_delete=models.CASCADE),
-	location = models.CharField(max_length=30)
 	preferences = models.ManyToManyField(Restriction)
