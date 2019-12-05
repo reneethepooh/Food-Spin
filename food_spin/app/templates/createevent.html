@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>Set up your meeting!</title>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic"><link rel='stylesheet' href='https://cdn.gitcdn.link/cdn/angular/bower-material/v1.1.1/angular-material.css'>
+
+<link rel='stylesheet' href='https://material.angularjs.org/1.1.1/docs.css'><link rel="stylesheet" href="../static/css/prefstyle.css">
+
+</head>
+<body style="background-color:#F5F5F5;">
+  <form action="createevent" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Submit">
+</form>
+
+</body>
+</html>
