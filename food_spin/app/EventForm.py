@@ -1,9 +1,23 @@
 from django import forms
+from django.forms import ModelForm
+from food_spin.models import Event
 
-class EventForm(forms.Form):
-    event_name = forms.CharField(label='Group Name', max_length=100)
-    location=forms.CharField(label='Location ', max_length=100)
-    search_radius=forms.IntegerField(label='radius')
+class EventForm(ModelForm):
+        class Meta:
+            model= Event
+            fields=['Event Name','Leader','Followers', 'Link', 'Status', 'Location', 'Radius']
+# name = models.CharField(max_length=30),
+# 	leader = models.ForeignKey(User, on_delete=models.CASCADE),
+# 	followers = models.ManyToManyField(User),
+# 	link = models.TextField(),
+# 	status = models.CharField(max_length=15),
+# 	location = models.CharField(max_length=30),
+# 	radius = models.IntegerField()
+
+
+    # event_name = forms.CharField(label='Group Name', max_length=100)
+    # location=forms.CharField(label='Location ', max_length=100)
+    # search_radius=forms.IntegerField(label='radius')
 
 
 
