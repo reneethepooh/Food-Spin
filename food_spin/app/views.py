@@ -56,12 +56,12 @@ def create_event(request):
         form=EventForm(request.POST)
         # check whether it's valid:
         if form.is_valid():
-			logger.info(form)
             # process the data in form.cleaned_data as required
 
             # ...
             # redirect to a new URL:
             return HttpResponseRedirect('/thanks/')
+		logger.info(form)
 
     # if a GET (or any other method) we'll create a blank form
     else:
