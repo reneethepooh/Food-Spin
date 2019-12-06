@@ -51,6 +51,7 @@ def login_request(request):
 				
 def create_event(request):
     # if this is a POST request we need to process the form data
+	logger.info('hiiiii')
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
         form=EventForm(request.POST)
@@ -61,7 +62,7 @@ def create_event(request):
             # ...
             # redirect to a new URL:
             return HttpResponseRedirect('/thanks/')
-		logger.info(form)
+
 
     # if a GET (or any other method) we'll create a blank form
     else:
