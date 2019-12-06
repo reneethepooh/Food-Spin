@@ -11,7 +11,6 @@ import logging
 logger = logging.getLogger("mylogger")
 
 
-
 def home(request):
 	return render(request, '../templates/intro.html')
 
