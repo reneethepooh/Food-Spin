@@ -20,7 +20,6 @@ class EventForm(forms.ModelForm):
 
     class Meta:
         model = Event
-        exclude=['name']
         fields='__all__'
 # name = models.CharField(max_length=30),
 # 	leader = models.ForeignKey(User, on_delete=models.CASCADE),
