@@ -1,10 +1,11 @@
 from django import forms
 from django.forms import ModelForm
-from app.models import Event
+from .models import Event
 
 class EventForm(ModelForm):
         class Meta:
-            model= Event
+            model = Event
+            fields = ['name','location','radius']
 # name = models.CharField(max_length=30),
 # 	leader = models.ForeignKey(User, on_delete=models.CASCADE),
 # 	followers = models.ManyToManyField(User),
