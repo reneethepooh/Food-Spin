@@ -1,6 +1,6 @@
 from django import forms
 from django.forms import ModelForm
-from food_spin.models import Event
+from app.models import Event
 
 class EventForm(ModelForm):
         class Meta:
