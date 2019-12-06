@@ -37,6 +37,7 @@ class EventForm(forms.ModelForm):
 
 
 
+
 # For event submission form: 
 
 #     food_query=forms.CharField(label='food', max_length=100)
