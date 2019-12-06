@@ -4,7 +4,15 @@ from .models import Event
 class EventForm(forms.ModelForm):
         class Meta:
             model = Event
-            fields='__all__'
+            fields={
+                'name',
+                'leader',
+                'followers',
+                'link',
+                'status',
+                'location',
+                'radius'
+            }
 # name = models.CharField(max_length=30),
 # 	leader = models.ForeignKey(User, on_delete=models.CASCADE),
 # 	followers = models.ManyToManyField(User),
@@ -17,7 +25,7 @@ class EventForm(forms.ModelForm):
     # event_name = forms.CharField(label='Group Name', max_length=100)
     # location=forms.CharField(label='Location ', max_length=100)
     # search_radius=forms.IntegerField(label='radius')
-
+ p
 
 
 
