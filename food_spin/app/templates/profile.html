@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" >
+<head>
+  <meta charset="UTF-8">
+  <title>My Profile</title>
+  <link rel="stylesheet" href="../static/css/signupstyle.css">
+</head>
+<body>
+<h1 align="center">My Profile</h1>
+<br><br>
+<h3>Hello, {{ user.username }}.</h3>
+<br>
+<h4>My Dietary Restrictions:</h4>
+{% for restriction in profile.restrictions.all %}
+<li>{{ restriction.name }}</li>
+{% endfor %}
+<br><br>
+<form action="profile" method="post">
+  {% csrf_token %}
+  {{ form }}
+  <button type="submit">Enter</button>
+</form>
+</body>
+</html>
