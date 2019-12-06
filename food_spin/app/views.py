@@ -73,8 +73,10 @@ def create_event(request):
 			return HttpResponseRedirect('/thanks/')
 		else:
 			form=EventForm()
-	form=EventForm()
-	return render(request, '../templates/createevent.html',{'form':form})
+	else:#when there is a get request
+		form=EventForm()
+		args = {'form': form}
+		return render(request, '../templates/createevent.html',args)
 
     # if a GET (or any other method) we'll create a blank form
     # else:
