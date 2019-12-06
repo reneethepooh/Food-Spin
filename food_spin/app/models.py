@@ -13,12 +13,12 @@ class UserProfile(models.Model):
 	restrictions = models.ManyToManyField(Restriction)
 
 class Event(models.Model):
-	name = models.CharField(max_length=30),
-	leader = models.ForeignKey(User, on_delete=models.CASCADE),
+	name = models.CharField(max_length=30,blank = True, null=True, default=''),
+	leader = models.ForeignKey(User, on_delete=models.CASCADE,blank = True, null=True, default=''),
 	followers = models.ManyToManyField(User),
-	link = models.TextField(),
-	status = models.CharField(max_length=15),
-	location = models.CharField(max_length=30),
+	link = models.TextField(blank = True, null=True, default=''),
+	status = models.CharField(max_length=15,blank = True, null=True, default=''),
+	location = models.CharField(max_length=30,blank = True, null=True, default=''),
 	radius = models.IntegerField(default=0,blank=True, null=True)
 
 
