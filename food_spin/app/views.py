@@ -70,7 +70,7 @@ def create_event(request):
 		if form.is_valid():
 			valid_form=form.cleaned_data
 			new_event=valid_form.save()
-			return HttpResponseRedirect('#')
+			return HttpResponseRedirect('/thanks/')
 		else:
 			form=EventForm()
 	return render(request, '../templates/createevent.html', {'form': form})
