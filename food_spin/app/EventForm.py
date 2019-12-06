@@ -4,7 +4,7 @@ from .models import Event
 class EventForm(forms.ModelForm):
         class Meta:
             model = Event
-            fields={
+            fields=[
                 'name',
                 'leader',
                 'followers',
@@ -12,7 +12,7 @@ class EventForm(forms.ModelForm):
                 'status',
                 'location',
                 'radius'
-            }
+            ]
 # name = models.CharField(max_length=30),
 # 	leader = models.ForeignKey(User, on_delete=models.CASCADE),
 # 	followers = models.ManyToManyField(User),
