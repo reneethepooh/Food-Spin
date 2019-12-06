@@ -28,6 +28,29 @@ DEBUG = True
 ALLOWED_HOSTS = ['django-env.t52bqpzs8m.us-west-2.elasticbeanstalk.com',"127.0.0.1"]
 
 
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'filters': {
+        'require_debug_true': {
+            '()': 'django.utils.log.RequireDebugTrue',
+        },
+    },
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+            'filters': ['require_debug_true'],
+        },
+    },
+    'loggers': {
+        'mylogger': {
+            'handlers': ['console'],
+            'level': os.getenv('DJANGO_LOG_LEVEL', 'INFO'),
+            'propagate': True,
+        },
+    },
+}
+
 # Application definition
 
 INSTALLED_APPS = [
