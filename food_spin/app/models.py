@@ -19,7 +19,7 @@ class Event(models.Model):
 	link = models.TextField(),
 	status = models.CharField(max_length=15),
 	location = models.CharField(max_length=30),
-	radius = models.IntegerField()
+	radius = models.IntegerField(default=0,blank=True, null=True)
 
 
 class EventUniqueSlug(Event):
