@@ -7,6 +7,9 @@ from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib import messages
 
+import logging
+logger = logging.getLogger("mylogger")
+
 
 def home(request):
 	return render(request, '../templates/intro.html')
@@ -53,6 +56,7 @@ def create_event(request):
         form=EventForm(request.POST)
         # check whether it's valid:
         if form.is_valid():
+			logger.info(form)
             # process the data in form.cleaned_data as required
 
             # ...
