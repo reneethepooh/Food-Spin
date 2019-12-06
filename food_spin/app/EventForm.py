@@ -6,8 +6,6 @@ class EventForm(forms.ModelForm):
             model = Event
             fields=[
                 'name',
-                'leader',
-                'followers',
                 'link',
                 'status',
                 'location',
