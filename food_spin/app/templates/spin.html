@@ -51,10 +51,11 @@
 </br></br>
 <div align = "right"><a href = "createevent"><p style="color:grey;">Create a new event!</p></a></div>
 </br></br>
-<div align = "right"><a href = "signup">Sign Up</a></div>
-<div align = "right"><a href = "login">Login</a></div>
 {% if user.is_authenticated %}
 <div align = "right"><a href = "logout">Logout</a></div>
+{% else %}
+<div align = "right"><a href = "login">Login</a></div>
+<div align = "right"><a href = "signup">Sign Up</a></div>
 {% endif %}
 </body>
 </html>
