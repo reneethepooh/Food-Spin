@@ -21,6 +21,9 @@ class Event(models.Model):
 	location = models.CharField(max_length=30),
 	radius = models.IntegerField()
 
+	def __str__(self):
+		return self.title
+
 class EventUniqueSlug(Event):
 	slug = models.SlugField(default='', max_length=250, null=True, blank=True)
 
