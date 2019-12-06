@@ -1,11 +1,12 @@
 from django.http import HttpResponseRedirect
-from .EventForm import EventForm
+from .EventForm import EventForm, PrefForm
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib import messages
+from app.models import Restriction, Profile
 
 def home(request):
 	return render(request, '../templates/intro.html')
@@ -71,3 +72,15 @@ def create_event(request):
         form = EventForm()
 
     return render(request, '../templates/createevent.html', {'form': form})
+
+def profile_page(request):
+	user = request.user
+	profile = user.profile
+	if request.method == 'POST':
+		form=PrefForm(request.POST)
+		if form.is_valid():
+			new_preference = Restriction.objects.create(name=form.cleaned_data.get('new_pref'))
+			profile.restrictions.add(new_preference)
+	else:
+		form = PrefForm()
+	return render(request, '../templates/profile.html', {'profile':profile, 'form':form, 'user':user})

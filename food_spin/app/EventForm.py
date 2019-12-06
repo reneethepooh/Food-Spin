@@ -5,7 +5,8 @@ class EventForm(forms.Form):
     location=forms.CharField(label='Location ', max_length=100)
     search_radius=forms.IntegerField(label='radius')
 
-
+class PrefForm(forms.Form):
+    new_pref = forms.CharField(label='New Restriction', max_length=20)
 
 # For event submission form: 
 
