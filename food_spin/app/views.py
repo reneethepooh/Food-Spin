@@ -65,6 +65,7 @@ def login_request(request):
 #             # redirect to a new URL:
 #             return HttpResponseRedirect('/thanks/')
 
+# @login_required
 def create_event(request):
 	if request.method == 'POST':
 		if form.is_valid():
