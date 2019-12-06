@@ -25,7 +25,7 @@ class EventForm(forms.ModelForm):
     # event_name = forms.CharField(label='Group Name', max_length=100)
     # location=forms.CharField(label='Location ', max_length=100)
     # search_radius=forms.IntegerField(label='radius')
- p
+
 
 
 
