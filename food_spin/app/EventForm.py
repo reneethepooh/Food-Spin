@@ -2,15 +2,25 @@ from django import forms
 from .models import Event
 
 class EventForm(forms.ModelForm):
-        class Meta:
-            model = Event
-            fields=['name']
+    def __init__(self, *args, **kwargs):
+        try:
+            data = kwargs.get('data', None).copy()
+        except AttributeError:
+            data = None
+        self.prefix = kwargs.get('prefix')
+        user = kwargs.pop('user', None)
 
-            # ,
-            #     'link',
-            #     'status',
-            #     'location',
-            #     'radius'
+        if data is not None:
+            if user is not None:
+                data[self.add_prefix('user')] = user.id
+            kwargs['data'] = data
+
+        super(EventForm, self).__init__(*args, **kwargs)
+
+
+    class Meta:
+        model = Event
+        fields='__all__'
 # name = models.CharField(max_length=30),
 # 	leader = models.ForeignKey(User, on_delete=models.CASCADE),
 # 	followers = models.ManyToManyField(User),
