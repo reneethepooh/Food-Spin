@@ -49,29 +49,37 @@ def login_request(request):
 	form = AuthenticationForm()
 	return render(request, "../templates/login.html", {"form":form})
 				
+# def create_event(request):
+#     # if this is a POST request we need to process the form data
+#     if request.method == 'POST':
+#         # create a form instance and populate it with data from the request:
+#         form=EventForm(request.POST)
+#         # check whether it's valid:
+#         if form.is_valid():
+# 			valid_form=form.cleaned_data
+# 			new_Event=valid_form.save()
+
+#             # process the data in form.cleaned_data as required
+
+#             # ...
+#             # redirect to a new URL:
+#             return HttpResponseRedirect('/thanks/')
+
 def create_event(request):
-    # if this is a POST request we need to process the form data
-    if request.method == 'POST':
-        # create a form instance and populate it with data from the request:
-        form=EventForm(request.POST)
-        # check whether it's valid:
-        if form.is_valid():
+	if request.method == 'POST':
+		if form.is_valid():
 			valid_form=form.cleaned_data
-			new_Event=valid_form.save()
-
-
-            # process the data in form.cleaned_data as required
-
-            # ...
-            # redirect to a new URL:
-            return HttpResponseRedirect('/thanks/')
-
+			new_event=valid_form.save()
+			return HttpResponseRedirect('#')
+		else:
+			form=EventForm()
+			return render(request, '../templates/createevent.html', {'form': form})
 
     # if a GET (or any other method) we'll create a blank form
-    else:
-        form = EventForm()
+    # else:
+    #     form = EventForm()
 
-    return render(request, '../templates/createevent.html', {'form': form})
+    # return render(request, '../templates/createevent.html', {'form': form})
 
 #class Event(DetailView):
 #    model = EventPkAndSlug
