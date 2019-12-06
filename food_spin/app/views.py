@@ -56,6 +56,10 @@ def create_event(request):
         form=EventForm(request.POST)
         # check whether it's valid:
         if form.is_valid():
+			valid_form=form.cleaned_data
+			new_Event=valid_form.save()
+
+
             # process the data in form.cleaned_data as required
 
             # ...
