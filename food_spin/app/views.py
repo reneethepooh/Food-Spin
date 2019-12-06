@@ -54,7 +54,6 @@ def create_event(request):
         # check whether it's valid:
         if form.is_valid():
             # process the data in form.cleaned_data as required
-			print(form)
 
             # ...
             # redirect to a new URL:
