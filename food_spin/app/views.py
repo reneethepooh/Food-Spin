@@ -57,27 +57,26 @@ def login_request(request):
 				
 def create_event(request):
 	if request.method == 'POST':
+		form=EventForm(data=request.Post)
 		if form.is_valid():
 			valid_form=form.cleaned_data
 			new_event=valid_form.save()
-			return HttpResponseRedirect('spin')
+			return redirect('/submission')
 		else:
-			form=EventForm()
+			messages.error(request, 'Invalid event creation')
 	else:#when there is a get request
 		form=EventForm()
 		
 	args = {'form': form}
 	return render(request, '../templates/createevent.html',args)
 
-    # if a GET (or any other method) we'll create a blank form
-    # else:
-    #     form = EventForm()
 
-    # return render(request, '../templates/createevent.html', {'form': form})
+def submit_event(request):
 
-#class Event(DetailView):
-#    model = EventPkAndSlug
-#    query_pk_and_slug = False
+	#event submission logic will go hereeee
+	return render(request,'../templates/submission.html')
+
+
 
 def profile_page(request):
 	user = request.user
