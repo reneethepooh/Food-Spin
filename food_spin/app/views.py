@@ -54,13 +54,21 @@ def login_request(request):
 			messages.error(request, 'Invalid username or password.')
 	form = AuthenticationForm()
 	return render(request, '../templates/login.html', {'form':form})
-				
+# class EventForm(forms.Form):
+#     event_name = forms.CharField(label='Group Name', max_length=100)
+#     location=forms.CharField(label='Location ', max_length=100)
+#     search_radius=forms.IntegerField(label='radius')				
 def create_event(request):
 	if request.method == 'POST':
 		form=EventForm(request.POST)
 		if form.is_valid():
-			valid_form=form.cleaned_data
-			new_event=valid_form.save()
+			# event_name=
+			# location=
+			# radius=
+			form.save()
+			# valid_form=form.cleaned_data
+			# new_event=valid_form.save()
+
 			return redirect('/submission')
 		else:
 			messages.error(request, 'Invalid event creation')
