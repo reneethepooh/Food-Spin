@@ -49,9 +49,9 @@
   <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js'></script><script  src="../static/js/spinscript.js"></script>
 
 </br></br>
+{% if user.is_authenticated %}
 <div align = "right"><a href = "createevent"><p style="color:grey;">Create a new event!</p></a></div>
 </br></br>
-{% if user.is_authenticated %}
 <div align = "right"><a href = "profile">My Profile</a></div>
 <div align = "right"><a href = "logout">Logout</a></div>
 {% else %}
