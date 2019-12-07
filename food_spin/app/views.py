@@ -57,7 +57,7 @@ def login_request(request):
 				
 def create_event(request):
 	if request.method == 'POST':
-		form=EventForm(data=request.Post)
+		form=EventForm(request.Post)
 		if form.is_valid():
 			valid_form=form.cleaned_data
 			new_event=valid_form.save()
