@@ -74,7 +74,7 @@ def create_event(request):
 		if form.is_valid():
 			event_name = form.cleaned_data['event_name']
 			location= form.cleaned_data['location']
-			radius= form.cleaned_data['search']
+			radius= form.cleaned_data['search_radius']
 			#slug would go below
 			random_link= str(random.random())#this is a dummy way of crearing a random link,   <------SLUG GOES HERE
 			new_event= Event.objects.create(name=event_name,location=location,radius=radius,link=random_link)
