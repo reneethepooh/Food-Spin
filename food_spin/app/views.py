@@ -1,5 +1,5 @@
 from django.http import HttpResponseRedirect
-from .forms import EventForm, PrefForm
+from .forms import EventForm, RestrictionForm, SubmissionForm
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -7,7 +7,6 @@ from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib import messages
 from app.models import Restriction, Profile, Event
-import random 
 
 def home(request):
 	return render(request, '../templates/intro.html')
@@ -63,30 +62,31 @@ def create_event(request):
 			event_name = form.cleaned_data['event_name']
 			location = form.cleaned_data['location']
 			radius = form.cleaned_data['search_radius']
-			random_link = str(random.random())
-			new_event = Event.objects.create(name=event_name,location=location,radius=radius,link=random_link, host=request.user)
-			new_event.save()
-			return redirect('/submission')
+			new_event = Event.objects.create(name=event_name, location=location, radius=radius, host=request.user)
+			return redirect('submission')
 		else:
 			messages.error(request, 'Invalid event creation')
 	else:
-		form=EventForm()
-		
-	args = {'form': form}
-	return render(request, '../templates/createevent.html',args)
+		form = EventForm()
+	return render(request, '../templates/createevent.html', {'form': form})
 
 def submit_event(request):
-	#event submission logic will go hereeee
+	user = request.user
+	if request.method == 'POST':
+		form = SubmissionForm(request.POST)
+		if form.is_valid():
+			new_preference = Restriction.objects.create(name=form.cleaned_data.get('preference'))
+			
 	return render(request,'../templates/submission.html')
 
 def profile_page(request):
 	user = request.user
 	profile = user.profile
 	if request.method == 'POST':
-		form = PrefForm(request.POST)
+		form = RestrictionForm(request.POST)
 		if form.is_valid():
-			new_preference = Restriction.objects.create(name=form.cleaned_data.get('new_pref'))
+			new_preference = Restriction.objects.create(name=form.cleaned_data.get('restriction'))
 			profile.restrictions.add(new_preference)
 	else:
-		form = PrefForm()
+		form = RestrictionForm()
 	return render(request, '../templates/profile.html', {'profile':profile, 'form':form, 'user':user})
