@@ -6,7 +6,8 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib import messages
-from app.models import Restriction, Profile
+from app.models import Restriction, Profile, Event
+import random 
 
 def home(request):
 	return render(request, '../templates/intro.html')
@@ -54,24 +55,47 @@ def login_request(request):
 			messages.error(request, 'Invalid username or password.')
 	form = AuthenticationForm()
 	return render(request, '../templates/login.html', {'form':form})
-				
+# class EventForm(forms.Form):
+#     event_name = forms.CharField(label='Group Name', max_length=100)
+#     location=forms.CharField(label='Location ', max_length=100)
+#     search_radius=forms.IntegerField(label='radius')	
+# 
+#class Event(models.Model):
+	# name = models.TextField(default='My Event')
+	# host = models.OneToOneField(User, on_delete=models.CASCADE, related_name='hosting', null=True)
+	# status = models.TextField(default='Started')
+	# location = models.TextField(default='Manhattan')
+	# radius = models.IntegerField(default=10)
+	# link = models.TextField(null=True)
+	# followers = models.ManyToManyField(User, related_name='participating')			
 def create_event(request):
-    # if this is a POST request we need to process the form data
-    if request.method == 'POST':
-        # create a form instance and populate it with data from the request:
-        form=EventForm(request.POST)
-        # check whether it's valid:
-        if form.is_valid():
-            # process the data in form.cleaned_data as required
-            # ...
-            # redirect to a new URL:
-            return HttpResponseRedirect('/thanks/')
+	if request.method == 'POST':
+		form=EventForm(request.POST)
+		if form.is_valid():
+			event_name = form.cleaned_data['event_name']
+			location= form.cleaned_data['location']
+			radius= form.cleaned_data['search_radius']
+			#slug would go below
+			random_link= str(random.random())#this is a dummy way of crearing a random link,   <------SLUG GOES HERE
+			new_event= Event.objects.create(name=event_name,location=location,radius=radius,link=random_link)
+			new_event.save()
 
-    # if a GET (or any other method) we'll create a blank form
-    else:
-        form = EventForm()
+			return redirect('/submission')
+		else:
+			messages.error(request, 'Invalid event creation')
+	else:#when there is a get request
+		form=EventForm()
+		
+	args = {'form': form}
+	return render(request, '../templates/createevent.html',args)
 
-    return render(request, '../templates/createevent.html', {'form': form})
+
+def submit_event(request):
+
+	#event submission logic will go hereeee
+	return render(request,'../templates/submission.html')
+
+
 
 def profile_page(request):
 	user = request.user
