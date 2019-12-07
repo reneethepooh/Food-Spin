@@ -20,10 +20,3 @@ class PrefForm(forms.Form):
 # # No leader needed
 #  No followers as thats gonna be 
 # 
-
-
-# Change the url from pref to create evebnt
-# Update links
-# Forms need to post to the same url as event creation
-# In views, handle post request to c reate a new event obeject
-#     no worry about user

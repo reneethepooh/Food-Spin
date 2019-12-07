@@ -22,12 +22,12 @@ class Profile(models.Model):
 
 class Event(models.Model):
 	name = models.TextField(default='My Event')
-	host = models.OneToOneField(User, on_delete=models.CASCADE, related_name='hosting', null=True,blank=True)
+	host = models.OneToOneField(User, on_delete=models.CASCADE, related_name='hosting', null=True)
 	status = models.TextField(default='Started')
 	location = models.TextField(default='Manhattan')
 	radius = models.IntegerField(default=10)
 	link = models.TextField(null=True)
-	followers = models.ManyToManyField(User, related_name='participating',blank=True)
+	followers = models.ManyToManyField(User, related_name='participating')
 
 class EventSubmission(models.Model):
 	user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='submission')

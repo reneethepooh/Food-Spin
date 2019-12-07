@@ -55,53 +55,35 @@ def login_request(request):
 			messages.error(request, 'Invalid username or password.')
 	form = AuthenticationForm()
 	return render(request, '../templates/login.html', {'form':form})
-# class EventForm(forms.Form):
-#     event_name = forms.CharField(label='Group Name', max_length=100)
-#     location=forms.CharField(label='Location ', max_length=100)
-#     search_radius=forms.IntegerField(label='radius')	
-# 
-#class Event(models.Model):
-	# name = models.TextField(default='My Event')
-	# host = models.OneToOneField(User, on_delete=models.CASCADE, related_name='hosting', null=True)
-	# status = models.TextField(default='Started')
-	# location = models.TextField(default='Manhattan')
-	# radius = models.IntegerField(default=10)
-	# link = models.TextField(null=True)
-	# followers = models.ManyToManyField(User, related_name='participating')			
+
 def create_event(request):
 	if request.method == 'POST':
-		form=EventForm(request.POST)
+		form = EventForm(request.POST)
 		if form.is_valid():
 			event_name = form.cleaned_data['event_name']
-			location= form.cleaned_data['location']
-			radius= form.cleaned_data['search_radius']
-			#slug would go below
-			random_link= str(random.random())#this is a dummy way of crearing a random link,   <------SLUG GOES HERE
-			new_event= Event.objects.create(name=event_name,location=location,radius=radius,link=random_link)
+			location = form.cleaned_data['location']
+			radius = form.cleaned_data['search_radius']
+			random_link = str(random.random())
+			new_event = Event.objects.create(name=event_name,location=location,radius=radius,link=random_link, host=request.user)
 			new_event.save()
-
 			return redirect('/submission')
 		else:
 			messages.error(request, 'Invalid event creation')
-	else:#when there is a get request
+	else:
 		form=EventForm()
 		
 	args = {'form': form}
 	return render(request, '../templates/createevent.html',args)
 
-
 def submit_event(request):
-
 	#event submission logic will go hereeee
 	return render(request,'../templates/submission.html')
-
-
 
 def profile_page(request):
 	user = request.user
 	profile = user.profile
 	if request.method == 'POST':
-		form=PrefForm(request.POST)
+		form = PrefForm(request.POST)
 		if form.is_valid():
 			new_preference = Restriction.objects.create(name=form.cleaned_data.get('new_pref'))
 			profile.restrictions.add(new_preference)
