@@ -6,7 +6,8 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib import messages
-from app.models import Restriction, Profile
+from app.models import Restriction, Profile, Event
+import random 
 
 def home(request):
 	return render(request, '../templates/intro.html')
@@ -57,17 +58,27 @@ def login_request(request):
 # class EventForm(forms.Form):
 #     event_name = forms.CharField(label='Group Name', max_length=100)
 #     location=forms.CharField(label='Location ', max_length=100)
-#     search_radius=forms.IntegerField(label='radius')				
+#     search_radius=forms.IntegerField(label='radius')	
+# 
+#class Event(models.Model):
+	# name = models.TextField(default='My Event')
+	# host = models.OneToOneField(User, on_delete=models.CASCADE, related_name='hosting', null=True)
+	# status = models.TextField(default='Started')
+	# location = models.TextField(default='Manhattan')
+	# radius = models.IntegerField(default=10)
+	# link = models.TextField(null=True)
+	# followers = models.ManyToManyField(User, related_name='participating')			
 def create_event(request):
 	if request.method == 'POST':
 		form=EventForm(request.POST)
 		if form.is_valid():
-			# event_name=
-			# location=
-			# radius=
-			form.save()
-			# valid_form=form.cleaned_data
-			# new_event=valid_form.save()
+			event_name = form.cleaned_data.get['event_name']
+			location= form.cleaned_data.get['location']
+			radius= form.cleaned_data.get['search']
+			#slug would go below
+			random_link= str(random.random())#this is a dummy way of crearing a random link,   <------SLUG GOES HERE
+			new_event= Event.objects.create(name=event_name,location=location,radius=radius,link=random_link)
+			new_event.save()
 
 			return redirect('/submission')
 		else:
