@@ -85,6 +85,7 @@ def submit_event(request, slug):
 		if 'conclude' in request.POST:
 			form = SubmissionForm(request.POST)
 			event.status = 'Pending'
+			event.save()
 			return redirect ('results',slug=event.slug)
 		else:
 			form = SubmissionForm(request.POST)
@@ -113,7 +114,7 @@ def result_page(request,slug):
 	print(submission)
 
 	for event in submission:
-		print(event.preferences)
+		print(event.preferences) #<------ App.Restriction.none
 		# for preference in event.preferences:
 		# 	print(preference.name) <-- ManyRelated Manager object is not iterable
 	
@@ -130,7 +131,7 @@ def result_page(request,slug):
 
 
 
-	# #display the result in the corresponding html page
+	# #display the result in the corresponding html page 
 	return render(request,'../templates/successpage.html')
 
 
