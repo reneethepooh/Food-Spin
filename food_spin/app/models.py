@@ -38,7 +38,7 @@ class Event(models.Model):
 class EventSubmission(models.Model):
 	user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='submission')
 	event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='submissions')
-	preferences = models.ManyToManyField(Restriction)
+	preferences = models.ManyToManyField(Restriction, related_name='submission')
 
 # The following two functions unique_slugify() and _slug_strip where taken from online
 # https://djangosnippets.org/snippets/690/ and are used for slug generation in Events

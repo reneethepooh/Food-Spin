@@ -110,11 +110,15 @@ def profile_page(request):
 
 def result_page(request,slug):
 	event = Event.objects.get(slug=slug)
-	submission = EventSubmission.objects.filter(event=event)
-	print(submission)
+	submissions = EventSubmission.objects.filter(event=event)
+	print(submissions)
 
-	for event in submission:
-		print(event.preferences) #<------ App.Restriction.none
+	for submission in submissions
+		restrictions = Restriction.objects.get(submission=event)
+		for restriction in restrictions:
+			print(restriction.name)
+		# print(Restriction.objects.get(submission=event))
+		# print(e) #<------ App.Restriction.none
 		# for preference in event.preferences:
 		# 	print(preference.name) <-- ManyRelated Manager object is not iterable
 	
