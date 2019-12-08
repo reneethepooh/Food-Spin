@@ -87,7 +87,7 @@ def submit_event(request, slug):
 		if 'conclude' in request.POST:
 			event.status = 'Pending'
 			event.save()
-			user_submission = EventSubmission.objects.get(user=user, event=event)
+			user_submission = EventSubmission.objects.get(user=request.user, event=Event.objects.get(slug=slug))
 			print(user_submission.preferences)
 			# for i in user_submission.preferences:
 			# 	print(i.name)
