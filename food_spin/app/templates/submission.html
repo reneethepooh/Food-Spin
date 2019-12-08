@@ -8,21 +8,18 @@
 
 </head>
 <body>
-<h1>Submit Your Preferences</h1>
-<form class="cf">
-  <div>
-    <input type="email" id="input-name" placeholder="Nickname">
-    <!--<input type="email" id="input-email" placeholder="Email address">-->
-    <input type="text" id="input-food-like" placeholder="Food you want for today, e.g. Japanese food">
-    <!--<input type="email" id="input-food-dislike" placeholder="Food you don't want for today"> 
-    <input type="text" id="input-diatery-ristrictions" placeholder="Diatery restrictions"> 
-  </div>
-  <div class="half right cf">
-    <textarea name="message" type="text" id="input-message" placeholder="Message"></textarea>
-  </div>  -->
+<h1>Submit your preferences for: {{ event.name }}</h1>
+<br><br>
+<div>
+  <h4>Current Preferences:</h4>
+  {% for preference in submission.preferences.all %}
+  <li>{{ preference.name }}</li>
+  {% endfor %}
+</div>
+<form class="cf" method='post'>
+  {% csrf_token %}
+  {{ form.as_p }}
   <input type="submit" value="Submit" id="input-submit">
 </form>
-<!-- partial -->
-  
 </body>
 </html>

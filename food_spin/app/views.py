@@ -6,7 +6,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib import messages
-from app.models import Restriction, Profile, Event
+from app.models import Restriction, Profile, Event, EventSubmission
 
 def home(request):
 	return render(request, '../templates/intro.html')
@@ -63,22 +63,32 @@ def create_event(request):
 			location = form.cleaned_data['location']
 			radius = form.cleaned_data['search_radius']
 			new_event = Event.objects.create(name=event_name, location=location, radius=radius, host=request.user)
+			new_submission = EventSubmission.objects.create(user=request.user, event=new_event)
 			return redirect('submission', slug=new_event.slug)
 		else:
 			messages.error(request, 'Invalid event creation')
 	else:
 		form = EventForm()
-	return render(request, '../templates/createevent.html', {'form': form})
+	return render(request, '../templates/createevent.html', {'form':form})
 
 def submit_event(request, slug):
 	user = request.user
-	
+	event = Event.objects.get(slug=slug)
+
+	try:
+		submission = EventSubmission.objects.get(user=user, event=event)
+	except EventSubmission.DoesNotExist:
+		submission = EventSubmission.objects.create(user=user, event=event)
+
 	if request.method == 'POST':
 		form = SubmissionForm(request.POST)
 		if form.is_valid():
 			new_preference = Restriction.objects.create(name=form.cleaned_data.get('preference'))
+			submission.preferences.add(new_preference)
+	else:
+		form = SubmissionForm()
 
-	return render(request,'../templates/submission.html')
+	return render(request, '../templates/submission.html', {'form':form,'submission':submission,'event':event})
 
 def profile_page(request):
 	user = request.user
@@ -90,4 +100,4 @@ def profile_page(request):
 			profile.restrictions.add(new_preference)
 	else:
 		form = RestrictionForm()
-	return render(request, '../templates/profile.html', {'profile':profile, 'form':form, 'user':user})
+	return render(request, '../templates/profile.html', {'profile':profile,'form':form,'user':user})
