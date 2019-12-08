@@ -29,7 +29,6 @@ class Event(models.Model):
 	location = models.TextField(default='Manhattan')
 	radius = models.IntegerField(default=10)
 	slug = models.SlugField(max_length=50, unique=True)
-	followers = models.ManyToManyField(User, related_name='participating')
 
 	def save(self, **kwargs):
 		slug = "%s %s" % (self.name, self.location)
