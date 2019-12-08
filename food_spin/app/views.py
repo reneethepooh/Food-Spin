@@ -158,7 +158,6 @@ def yelp_call(radius, location , preferences):
   }
   response = requests.request('GET', url, headers=headers, params=parameters)
   restaurant_data=response.json()
-  print(restaurant_data)
 
   randomizer = random.randint(0,18)
   winner=restaurant_data['businesses'][randomizer]
