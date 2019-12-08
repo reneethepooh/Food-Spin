@@ -112,7 +112,7 @@ def result_page(request,slug):
 	event_submissions=EventSubmission.objects.filter(event=event)
 	event_preferences=[]
 	for submission in event_submissions:
-		print(submission.preferences.all)
+		print(submission.preferences.all.name)
 	# 	for preference in submission.preferences.all:
 	# 		event_preferences.append(preference.name)
 	# print(event_preferences)
