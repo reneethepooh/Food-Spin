@@ -109,7 +109,6 @@ def profile_page(request):
 	return render(request, '../templates/profile.html', {'profile':profile,'form':form,'user':user})
 
 def result_page(request,slug):
-	user = request.user
 	event = Event.objects.get(slug=slug)
 	event_followers=event.followers.all()
 	#get event submissions for all event followers:
@@ -128,7 +127,7 @@ def result_page(request,slug):
 	
 	event_food=list(set(event_food)) #remove the duplicates using the set function in python
 
-	restaurant_name=yelp_call(event.radius,event.location,event_food)
+	restaurant_name=yelp_call(event.radius,event.location,event_food) #make the apicall, which returns restaurant name right now
 
 
 	#display the result in the corresponding html page
