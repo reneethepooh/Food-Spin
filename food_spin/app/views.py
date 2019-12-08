@@ -114,28 +114,14 @@ def result_page(request,slug):
 	print(submissions)
 
 	for submission in submissions:
-		restrictions = Restriction.objects.get(submission=event)
+		restrictions = Restriction.objects.get(submission=submission)
 		for restriction in restrictions:
 			print(restriction.name)
-		# print(Restriction.objects.get(submission=event))
-		# print(e) #<------ App.Restriction.none
-		# for preference in event.preferences:
-		# 	print(preference.name) <-- ManyRelated Manager object is not iterable
-	
+	# for submission in submissions:
+	# 	restrictions = Restriction.objects.get(submission=event) <-----cannot query event object must be event submission instance
+	# 	for restriction in restrictions:
+	# 		print(restriction.name)
 
-
-	# print(event_submissions)
-	# event_preferences=[]
-	# for submission in event_submissions.iterator():
-	# 	print(submission.event.name)
-	# 	for preference in submission.preferences.all:
-	# 		event_preferences.append(preference.name)
-	# print(event_preferences)
-
-
-
-
-	# #display the result in the corresponding html page 
 	return render(request,'../templates/successpage.html')
 
 
