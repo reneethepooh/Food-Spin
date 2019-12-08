@@ -85,7 +85,7 @@ def submit_event(request, slug):
 		if 'conclude' in request.POST:
 			form = SubmissionForm(request.POST)
 			event.status = 'Pending'
-			event.save()
+			return redirect ('results',slug=event.slug)
 		else:
 			form = SubmissionForm(request.POST)
 			if form.is_valid():
@@ -106,3 +106,60 @@ def profile_page(request):
 	else:
 		form = RestrictionForm()
 	return render(request, '../templates/profile.html', {'profile':profile,'form':form,'user':user})
+
+def result_page(request,slug):
+	event = Event.objects.get(slug=slug)
+	event_followers=event.followers.all()
+	#get event submissions for all event followers:
+	event_submission=[]
+	for i in event_followers:
+		event_submission.append(EventSubmission.objects.get(user=i,event=event))
+
+	#also get the event submission from the host
+	event_submission.append(EventSubmission.objects.get(user=event.host,event=event))
+
+	#now that we have all event submissions, lets get the preferences of each one:
+	event_food=[]
+	for pref in event_submission:
+		for restriction in event_submission[pref].preferences.all():
+			event_food.append(restriction.name)
+	
+	event_food=list(set(event_food)) #remove the duplicates using the set function in python
+
+	restaurant_name=yelp_call(event.radius,event.location,event_food) #make the apicall, which returns restaurant name right now
+
+
+	#display the result in the corresponding html page
+	return render(request,'../templates/succespage.html')
+
+
+	
+
+
+def yelp_call(radius, location , preferences):
+  yelpapi_key="jsF4Y56oGgdh4JFCZabwwDxxbOJtRJXWL7aI1GP90Gb36w49rxZLwAhoybma_hTqFZl1YXzmFyyY4-JE1XEm6T2r5eAjkoKG7L2U9ovk4tDgWs3Fmw1ty__KkBPLXXYx" 
+  yelp_url="https://api.yelp.com/v3/businesses/search" 
+  API_HOST = 'https://api.yelp.com' 
+  SEARCH_PATH = '/v3/businesses/search'
+
+  empty_pref=" "
+  term = empty_pref.join(preferences)
+  seearch_location = location
+  SEARCH_LIMIT = 20
+  search_radius=radius # search_radius in meters
+  parameters={
+  'term': term.replace(' ', '+'),
+  'location': search_location.replace(' ', '+'),
+  'limit': SEARCH_LIMIT,
+  'radius':search_radius
+  }
+  
+  url = '{0}{1}'.format(API_HOST, quote(SEARCH_PATH.encode('utf8')))
+  headers = {
+    'Authorization': 'Bearer %s' % yelpapi_key,
+  }
+  response = requests.request('GET', url, headers=headers, params=parameters)
+  restaurant_data=response.json()
+
+  #Do data processing to define restaurant we get from API call
+  return restaurant_data['businesses'][random.randint(0,19)]['name']
