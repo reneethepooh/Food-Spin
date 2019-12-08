@@ -29,10 +29,10 @@ class Event(models.Model):
 	location = models.TextField(default='Manhattan')
 	radius = models.IntegerField(default=10)
 	slug = models.SlugField(max_length=50, unique=True)
-    restaurant_name=models.TextField(default='',related_name='restaurant')
-    image_url=models.TextField(default='',related_name='image')
-    yelp_url=models.TextField(default='',related_name='yelp')
-    address=models.TextField(default='',related_name='address')
+    restaurant_name=models.TextField(default='', related_name='restaurant')
+    image_url=models.TextField(default='', related_name='image')
+    yelp_url=models.TextField(default='', related_name='yelp')
+    address=models.TextField(default='', related_name='address')
 
 
 	def save(self, **kwargs):
