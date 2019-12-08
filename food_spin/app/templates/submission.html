@@ -8,6 +8,7 @@
 
 </head>
 <body>
+{% if event.status != 'Pending' %}
 <h1>Submit your preferences for: {{ event.name }}</h1>
 <br><br>
 <div>
@@ -21,5 +22,14 @@
   {{ form.as_p }}
   <input type="submit" value="Submit" id="input-submit">
 </form>
+{% if user == event.host %}
+<form method='post'>
+  {% csrf_token %}
+  <input type='submit' value='Done Collecting Submissions' name='conclude'>
+</form>
+{% endif %}
+{% else %}
+<h4>Done collecting submissions. Pending results.</h4>
+{% endif %}
 </body>
 </html>
