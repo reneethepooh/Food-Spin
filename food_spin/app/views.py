@@ -114,7 +114,7 @@ def result_page(request,slug):
 	print(submissions)
 
 	for submission in submissions:
-		restrictions = Restriction.objects.get(submission=submission)
+		restrictions = Restriction.objects.filter(submission=submission)
 		for restriction in restrictions:
 			print(restriction.name)
 	# for submission in submissions:
