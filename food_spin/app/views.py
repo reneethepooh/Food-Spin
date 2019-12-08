@@ -108,13 +108,12 @@ def profile_page(request):
 	return render(request, '../templates/profile.html', {'profile':profile,'form':form,'user':user})
 
 def result_page(request,slug):
-	user = request.user
 	event = Event.objects.get(slug=slug)
-	submission = EventSubmission.objects.filter(user=user, event=event)
+	submission = EventSubmission.objects.filter(event=event)
 	print(submission)
 
-	for event in submission:
-		print(event.preferences)
+	# for event in submission:
+	# 	print(event.preferences)
 	
 
 
