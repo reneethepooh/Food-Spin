@@ -143,12 +143,12 @@ def yelp_call(radius, location , preferences):
   empty_pref=" "
   term = empty_pref.join(preferences)
   location = location
-  SEARCH_LIMIT = 20
+#   SEARCH_LIMIT = 20
   search_radius=radius # search_radius in meters
   parameters={
   'term': term.replace(' ', '+'),
   'location': location.replace(' ', '+'),
-  'limit': SEARCH_LIMIT,
+#   'limit': SEARCH_LIMIT,
   'radius':search_radius
   }
   
