@@ -88,6 +88,7 @@ def submit_event(request, slug):
 			event.status = 'Pending'
 			event.save()
 			print(event)
+		form = SubmissionForm(request.POST)
 		if form.is_valid():
 			new_preference = Restriction.objects.create(name=form.cleaned_data.get('preference'))
 			submission.preferences.add(new_preference)
