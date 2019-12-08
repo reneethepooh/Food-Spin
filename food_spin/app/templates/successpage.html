@@ -13,6 +13,9 @@
   <h1>Your Event is Successfully Created! {{event.name}} should go to the following restaurant: </h1>
   
   <h2>Restaurant Name: {{result}}</h2>
+  {%for item in result%}
+  <li>{{item}}</li>
+{% endfor %}
 
 
 </main>
