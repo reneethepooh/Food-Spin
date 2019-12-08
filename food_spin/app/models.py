@@ -4,6 +4,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.conf import settings
 from django.template.defaultfilters import slugify
+import re
 
 
 class Restriction(models.Model):
