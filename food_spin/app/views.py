@@ -113,9 +113,9 @@ def result_page(request,slug):
 	print(event.name)
 	submission=EventSubmission.objects.get(event=event)
 	print("Event Submission: ------")
-	print(submission)
-	for preference in submission.preferences.all:
-		print(preference.name)
+	print(submission.preferences)
+	# for preference in submission.preferences.all:
+	# 	print(preference.name)
 	
 
 
