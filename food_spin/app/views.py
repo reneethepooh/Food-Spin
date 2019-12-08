@@ -109,9 +109,9 @@ def profile_page(request):
 
 def result_page(request,slug):
 	event = Event.objects.get(slug=slug)
-	event_submissions=EventSubmission.objects.get(event=event)
+	event_submissions=EventSubmission.objects.filter(event=event)
 	event_preferences=[]
-	for submission in event_submissions.all():
+	for submission in event_submissions:
 		for preference in submission.preference.all():
 			event_preferences.append(preference.name)
 	print(event_preferences)
