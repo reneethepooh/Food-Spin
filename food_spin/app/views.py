@@ -7,6 +7,9 @@ from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib import messages
 from app.models import Restriction, Profile, Event, EventSubmission
+import requests 
+from urllib.parse import quote
+import random
 
 def home(request):
 	return render(request, '../templates/intro.html')
@@ -104,3 +107,37 @@ def profile_page(request):
 	else:
 		form = RestrictionForm()
 	return render(request, '../templates/profile.html', {'profile':profile,'form':form,'user':user})
+
+
+
+def yelp_call(radius, location , preferences):
+  yelpapi_key="jsF4Y56oGgdh4JFCZabwwDxxbOJtRJXWL7aI1GP90Gb36w49rxZLwAhoybma_hTqFZl1YXzmFyyY4-JE1XEm6T2r5eAjkoKG7L2U9ovk4tDgWs3Fmw1ty__KkBPLXXYx" 
+  yelp_url="https://api.yelp.com/v3/businesses/search" 
+  API_HOST = 'https://api.yelp.com' 
+  SEARCH_PATH = '/v3/businesses/search'
+
+  empty_pref=" "
+  term = empty_pref.join(preferences)
+  location = 'NY'
+  SEARCH_LIMIT = 20
+  search_radius=radius # search_radius in meters
+  parameters={
+  'term': term.replace(' ', '+'),
+  'location': location.replace(' ', '+'),
+  'limit': SEARCH_LIMIT,
+  'radius':search_radius
+  }
+  
+  url = '{0}{1}'.format(API_HOST, quote(SEARCH_PATH.encode('utf8')))
+  headers = {
+    'Authorization': 'Bearer %s' % yelpapi_key,
+  }
+  response = requests.request('GET', url, headers=headers, params=parameters)
+  restaurant_data=response.json()
+  # for i in restaurant_data['businesses']:
+  #   print(i['name'])
+  return restaurant_data['businesses'][random.randint(0,19)]['name']
+
+# print(yelp_call(1000,"NY",['pizza','chinese','fries']))
+
+
