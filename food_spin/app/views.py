@@ -87,7 +87,6 @@ def submit_event(request, slug):
 		if 'conclude' in request.POST:
 			event.status = 'Pending'
 			event.save()
-			return redirect('successpage',slug = event.slug)
 		form = SubmissionForm(request.POST)
 		if form.is_valid():
 			new_preference = Restriction.objects.create(name=form.cleaned_data.get('preference'))
