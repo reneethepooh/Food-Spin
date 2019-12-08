@@ -130,7 +130,7 @@ def result_page(request,slug):
 
 
 	# #display the result in the corresponding html page
-	return render(request,'../templates/succespage.html')
+	return render(request,'../templates/successpage.html')
 
 
 	
