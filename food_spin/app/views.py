@@ -111,7 +111,7 @@ def result_page(request,slug):
 	event = Event.objects.get(slug=slug)
 	print("Event----------")
 	print(event.name)
-	submissions=event.event_submissions_set.all()
+	submissions=event.event_submission_set.all()
 	print("Event Submission: ------")
 	print(submission)
 	# for preference in submission.preferences.all:
