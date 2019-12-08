@@ -113,7 +113,7 @@ def result_page(request,slug):
 	print(submission)
 
 	for event in submission:
-		print(event.user.preferences)
+		print(event.preferences)
 		# for preference in event.preferences:
 		# 	print(preference.name) <-- ManyRelated Manager object is not iterable
 	
