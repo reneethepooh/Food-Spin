@@ -122,8 +122,9 @@ def result_page(request,slug):
 			event_preferences.append(restriction.name)
 	event_preferences=set(event_preferences)
 	print(event_preferences)
+	result=yelp_call(event.radius,event.location,event_preferences)
 
-	return render(request,'../templates/successpage.html')
+	return render(request,'../templates/successpage.html',{'results':result})
 
 
 	
@@ -137,12 +138,12 @@ def yelp_call(radius, location , preferences):
 
   empty_pref=" "
   term = empty_pref.join(preferences)
-  seearch_location = location
+  location = location
   SEARCH_LIMIT = 20
   search_radius=radius # search_radius in meters
   parameters={
   'term': term.replace(' ', '+'),
-  'location': search_location.replace(' ', '+'),
+  'location': location.replace(' ', '+'),
   'limit': SEARCH_LIMIT,
   'radius':search_radius
   }
@@ -154,5 +155,20 @@ def yelp_call(radius, location , preferences):
   response = requests.request('GET', url, headers=headers, params=parameters)
   restaurant_data=response.json()
 
-  #Do data processing to define restaurant we get from API call
-  return restaurant_data['businesses'][random.randint(0,19)]['name']
+  random_num = random.randint(0,19)
+  winner=restaurant_data['businesses'][random_num]
+
+
+  restaurant_name=winner['name']
+  image_url=winner['image_url']
+  yelp_url=winner['url']
+  address=' '
+  address=address.join(winner['location']['display_address'])
+
+  results=[]
+  results.append(restaurant_name)
+  results.append(image_url)
+  results.append(yelp_url)
+  results.append(address)
+
+  return results
