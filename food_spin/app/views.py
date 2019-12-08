@@ -7,6 +7,9 @@ from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib import messages
 from app.models import Restriction, Profile, Event, EventSubmission
+import requests 
+from urllib.parse import quote
+import random
 
 def home(request):
 	return render(request, '../templates/intro.html')

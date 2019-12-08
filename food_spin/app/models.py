@@ -4,9 +4,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.conf import settings
 from django.template.defaultfilters import slugify
-import requests 
-from urllib.parse import quote
-import random
+
 
 class Restriction(models.Model):
 	name = models.CharField(max_length=20)
