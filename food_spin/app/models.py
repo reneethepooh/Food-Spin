@@ -24,7 +24,7 @@ class Profile(models.Model):
 
 class Event(models.Model):
 	name = models.TextField(default='My Event')
-	host = models.ForeignKey(User, on_delete=models.CASCADE, related_name='hosting', null=True,blank=True)
+	host = models.ForeignKey(User, on_delete=models.CASCADE, related_name='hosting', null=True)
 	status = models.TextField(default='Started')
 	location = models.TextField(default='Manhattan')
 	radius = models.IntegerField(default=10)
