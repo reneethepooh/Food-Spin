@@ -113,8 +113,8 @@ def result_page(request,slug):
 	submission = EventSubmission.objects.filter(user=user, event=event)
 	print(submission)
 
-	for preference in submission:
-		print(preference)
+	for event in submission:
+		print(event.preferences)
 	
 
 
