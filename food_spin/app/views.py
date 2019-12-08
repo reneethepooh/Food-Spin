@@ -110,7 +110,7 @@ def profile_page(request):
 def result_page(request,slug):
 	user = request.user
 	event = Event.objects.get(slug=slug)
-	submissions = EventSubmission.objects.create(user=user, event=event)
+	submission = EventSubmission.objects.create(user=user, event=event)
 
 	for preference in submission.preferences.all:
 		print(preference.name)
