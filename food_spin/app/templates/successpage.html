@@ -11,10 +11,11 @@
 <main>
   <h1>Your Event is Successfully Created! {{event.name}} should go to the following restaurant: </h1>
   
-  <h2>Restaurant Name: {{result}}</h2>
-  {%for item in result%}
-  <li>{{item}}</li>
-  {% endfor %}
+  <h2>Restaurant: {{restaurant.restaurant_name}}</h2>
+  <img src={{restaurant.image_url}}>
+  <h2>Location: {{restaurant.address}}</h2>
+  <h2>Reserve the restaurant by clicking the following <a href={{restaurant.restaurant_name}}>LINK</a></h2>
+
 
 
 </main>

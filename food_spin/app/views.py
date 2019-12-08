@@ -126,10 +126,15 @@ def result_page(request,slug):
 	event_preferences=set(event_preferences)
 	print(event_preferences)
 	result=yelp_call(event.radius,event.location,event_preferences)
-	result = result[0]
+	# --------------For Reference-------------
+	#result is a list with the following fields=
+	# result[0]=Restaurant Name
+	# result[1]= Url to an image of the restaurant
+	# result[2]= URL to yelp for reservation
+	# result[3]= Restaurant Address
+	restaurant= Restaurant.objects.create(event=event,restaurant_name=result[0],image_url=result[1],yelp_url=result[2],address=result[3])
 	print(result)
-
-	return render(request,'../templates/successpage.html',{'result':result,'event':event})
+	return render(request,'../templates/successpage.html',{'restauranr':restaurant,'event':event})
 
 
 	
