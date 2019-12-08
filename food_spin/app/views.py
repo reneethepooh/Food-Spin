@@ -87,15 +87,15 @@ def submit_event(request, slug):
 		if 'conclude' in request.POST:
 			event.status = 'Pending'
 			event.save()
-		form = SubmissionForm(request.POST)
+			print(event)
 		if form.is_valid():
 			new_preference = Restriction.objects.create(name=form.cleaned_data.get('preference'))
 			submission.preferences.add(new_preference)
+
 	else:
 		form = SubmissionForm()
 
 	return render(request, '../templates/submission.html', {'user':user, 'form':form,'submission':submission,'event':event})
-
 def profile_page(request):
 	user = request.user
 	profile = user.profile
@@ -118,12 +118,12 @@ def yelp_call(radius, location , preferences):
 
   empty_pref=" "
   term = empty_pref.join(preferences)
-  location = 'NY'
+  seearch_location = location
   SEARCH_LIMIT = 20
   search_radius=radius # search_radius in meters
   parameters={
   'term': term.replace(' ', '+'),
-  'location': location.replace(' ', '+'),
+  'location': search_location.replace(' ', '+'),
   'limit': SEARCH_LIMIT,
   'radius':search_radius
   }
