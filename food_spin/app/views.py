@@ -108,28 +108,28 @@ def profile_page(request):
 	return render(request, '../templates/profile.html', {'profile':profile,'form':form,'user':user})
 
 def result_page(request,slug):
-	event = Event.objects.get(slug=slug)
-	event_followers=event.followers.all()
-	#get event submissions for all event followers:
-	event_submission=[]
-	for i in event_followers:
-		event_submission.append(EventSubmission.objects.get(user=i,event=event))
+	# event = Event.objects.get(slug=slug)
+	# event_followers=event.followers.all()
+	# #get event submissions for all event followers:
+	# event_submission=[]
+	# for i in event_followers:
+	# 	event_submission.append(EventSubmission.objects.get(user=i,event=event))
 
-	#also get the event submission from the host
-	event_submission.append(EventSubmission.objects.get(user=event.host,event=event))
+	# #also get the event submission from the host
+	# event_submission.append(EventSubmission.objects.get(user=event.host,event=event))
 
-	#now that we have all event submissions, lets get the preferences of each one:
-	event_food=[]
-	for pref in event_submission:
-		for restriction in event_submission[pref].preferences.all():
-			event_food.append(restriction.name)
+	# #now that we have all event submissions, lets get the preferences of each one:
+	# event_food=[]
+	# for pref in event_submission:
+	# 	for restriction in event_submission[pref].preferences.all():
+	# 		event_food.append(restriction.name)
 	
-	event_food=list(set(event_food)) #remove the duplicates using the set function in python
+	# event_food=list(set(event_food)) #remove the duplicates using the set function in python
 
-	restaurant_name=yelp_call(event.radius,event.location,event_food) #make the apicall, which returns restaurant name right now
+	# restaurant_name=yelp_call(event.radius,event.location,event_food) #make the apicall, which returns restaurant name right now
 
 
-	#display the result in the corresponding html page
+	# #display the result in the corresponding html page
 	return render(request,'../templates/succespage.html')
 
 
