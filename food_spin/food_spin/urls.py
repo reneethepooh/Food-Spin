@@ -27,5 +27,5 @@ urlpatterns = [
     path('login', views.login_request, name='login'),
     path('logout', views.logout_request, name='logout'),
     path('profile', views.profile_page, name='profile'),
-    path('submission',views.submit_event,name='submission')
+    path('event/submission/<slug:slug>', views.submit_event, name='submission')
 ]

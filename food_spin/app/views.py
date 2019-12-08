@@ -63,20 +63,21 @@ def create_event(request):
 			location = form.cleaned_data['location']
 			radius = form.cleaned_data['search_radius']
 			new_event = Event.objects.create(name=event_name, location=location, radius=radius, host=request.user)
-			return redirect('submission')
+			return redirect('submission', slug=new_event.slug)
 		else:
 			messages.error(request, 'Invalid event creation')
 	else:
 		form = EventForm()
 	return render(request, '../templates/createevent.html', {'form': form})
 
-def submit_event(request):
+def submit_event(request, slug):
 	user = request.user
+	
 	if request.method == 'POST':
 		form = SubmissionForm(request.POST)
 		if form.is_valid():
 			new_preference = Restriction.objects.create(name=form.cleaned_data.get('preference'))
-			
+
 	return render(request,'../templates/submission.html')
 
 def profile_page(request):
