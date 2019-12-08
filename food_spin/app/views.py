@@ -113,7 +113,7 @@ def result_page(request,slug):
 	print(submission)
 
 	for event in submission:
-		print(event.user.username)
+		print(event.user.preferences)
 		# for preference in event.preferences:
 		# 	print(preference.name)
 	
