@@ -30,6 +30,8 @@ class Event(models.Model):
 	radius = models.IntegerField(default=10)
 	slug = models.SlugField(max_length=50, unique=True)
 	followers = models.ManyToManyField(User, related_name='participating')
+    #we need to add api call result in the event as well
+    
 
 	def save(self, **kwargs):
 		slug = "%s %s" % (self.name, self.location)
