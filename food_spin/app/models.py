@@ -19,7 +19,7 @@ def save_user_profile(sender, instance, **kwards):
 	instance.profile.save()
 
 class Profile(models.Model):
-	owner = models.OneToOneField(User, on_delete=models.CASCADE, related_name='profile', null=True)
+	owner = models.BigIntegerField(primary_key=True)
 	restrictions = models.ManyToManyField(Restriction)
 
 class Event(models.Model):
