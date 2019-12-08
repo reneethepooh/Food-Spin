@@ -128,7 +128,7 @@ def result_page(request,slug):
 	result=yelp_call(event.radius,event.location,event_preferences)
 	print(result)
 
-	return render(request,'../templates/successpage.html',{'results':result})
+	return render(request,'../templates/successpage.html',{'results':result,'event':event})
 
 
 	
@@ -143,12 +143,10 @@ def yelp_call(radius, location , preferences):
   empty_pref=" "
   term = empty_pref.join(preferences)
   location = location
-#   SEARCH_LIMIT = 20
   search_radius=radius # search_radius in meters
   parameters={
   'term': term.replace(' ', '+'),
   'location': location.replace(' ', '+'),
-#   'limit': SEARCH_LIMIT,
   'radius':search_radius
   }
   
