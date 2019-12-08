@@ -113,14 +113,15 @@ def result_page(request,slug):
 	submissions = EventSubmission.objects.filter(event=event)
 	print(submissions)
 
+
+	event_preferences=[]
 	for submission in submissions:
 		restrictions = Restriction.objects.filter(submission=submission)
 		for restriction in restrictions:
 			print(restriction.name)
-	# for submission in submissions:
-	# 	restrictions = Restriction.objects.get(submission=event) <-----cannot query event object must be event submission instance
-	# 	for restriction in restrictions:
-	# 		print(restriction.name)
+			event_preferences.append(restriction.name)
+	event_preferences=set(event_preferences)
+	print(event_preferences)
 
 	return render(request,'../templates/successpage.html')
 
