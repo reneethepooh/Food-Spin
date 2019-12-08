@@ -12,6 +12,7 @@
 <h1>Submit your preferences for: {{ event.name }}</h1>
 <br><br>
 <div>
+  <p><a href="{{ url }}" class="copy-click" data-tooltip-text="Click to copy" data-tooltip-text-copied="✔ Copied to clipboard">Click Here </a> to share with your friends.</p>
   <h4>Current Preferences:</h4>
   {% for preference in submission.preferences.all %}
   <li>{{ preference.name }}</li>

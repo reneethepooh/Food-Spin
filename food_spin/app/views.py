@@ -74,6 +74,7 @@ def create_event(request):
 def submit_event(request, slug):
 	user = request.user
 	event = Event.objects.get(slug=slug)
+	url = request.get_full_path()
 
 	try:
 		submission = EventSubmission.objects.get(user=user, event=event)
@@ -82,6 +83,7 @@ def submit_event(request, slug):
 
 	if request.method == 'POST':
 		if 'conclude' in request.POST:
+			form = SubmissionForm(request.POST)
 			event.status = 'Pending'
 			event.save()
 		else:
@@ -91,7 +93,7 @@ def submit_event(request, slug):
 				submission.preferences.add(new_preference)
 	else:
 		form = SubmissionForm()
-	return render(request, '../templates/submission.html', {'user':user, 'form':form,'submission':submission,'event':event})
+	return render(request, '../templates/submission.html', {'url':url, 'user':user, 'form':form,'submission':submission,'event':event})
 
 def profile_page(request):
 	user = request.user
