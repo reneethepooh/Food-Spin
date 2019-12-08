@@ -30,8 +30,6 @@ class Event(models.Model):
 	location = models.TextField(default='Manhattan')
 	radius = models.IntegerField(default=10)
 	slug = models.SlugField(max_length=50, unique=True)
-    restaurant_name = models.TextField(default='none')
-
 
 
     # restaurant_name=models.TextField(default='')
