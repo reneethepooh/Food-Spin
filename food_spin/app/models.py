@@ -31,17 +31,18 @@ class Event(models.Model):
 	radius = models.IntegerField(default=10)
 	slug = models.SlugField(max_length=50, unique=True)
 
-
-    # restaurant_name=models.TextField(default='')
-    # image_url=models.TextField(default='')
-    # yelp_url=models.TextField(default='')
-    # address=models.TextField(default='')
-
-
 	def save(self, **kwargs):
 		slug = "%s %s" % (self.name, self.location)
 		unique_slugify(self, slug)
 		super(Event, self).save()
+
+class Restaurant(models.Model):
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='restaurant') #related namee describes thee inverse relationship
+    restaurant_name=models.TextField(default='')
+    image_url=models.TextField(default='')
+    yelp_url=models.TextField(default='')
+    address=models.TextField(default='')
+
 
 class EventSubmission(models.Model):
 	user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='submission')

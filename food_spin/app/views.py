@@ -6,7 +6,7 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib import messages
-from app.models import Restriction, Profile, Event, EventSubmission
+from app.models import Restriction, Profile, Event, EventSubmission, Restaurant
 import requests 
 from urllib.parse import quote
 import random
