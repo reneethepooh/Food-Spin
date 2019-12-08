@@ -87,10 +87,7 @@ def submit_event(request, slug):
 		if 'conclude' in request.POST:
 			event.status = 'Pending'
 			event.save()
-			user_submission = EventSubmission.objects.get(user=request.user, event=Event.objects.get(slug=slug))
-			print(user_submission.preferences)
-			# for i in user_submission.preferences:
-			# 	print(i.name)
+			return redirect('successpage',slug = event.slug)
 		form = SubmissionForm(request.POST)
 		if form.is_valid():
 			new_preference = Restriction.objects.create(name=form.cleaned_data.get('preference'))
@@ -112,6 +109,13 @@ def profile_page(request):
 		form = RestrictionForm()
 	return render(request, '../templates/profile.html', {'profile':profile,'form':form,'user':user})
 
+def result_page(request,slug):
+	user = request.user
+	event = Event.objects.get(slug=slug)
+	return render(request,'../templates/succespage.html')
+
+
+	
 
 
 def yelp_call(radius, location , preferences):
@@ -138,10 +142,9 @@ def yelp_call(radius, location , preferences):
   }
   response = requests.request('GET', url, headers=headers, params=parameters)
   restaurant_data=response.json()
-  # for i in restaurant_data['businesses']:
-  #   print(i['name'])
+
+  #Do data processing to define restaurant we get from API call
   return restaurant_data['businesses'][random.randint(0,19)]['name']
 
-# print(yelp_call(1000,"NY",['pizza','chinese','fries']))
 
 
