@@ -81,6 +81,9 @@ def submit_event(request, slug):
 		submission = EventSubmission.objects.create(user=user, event=event)
 
 	if request.method == 'POST':
+		if 'conclude' in request.POST:
+			event.status = 'Pending'
+			event.save()
 		form = SubmissionForm(request.POST)
 		if form.is_valid():
 			new_preference = Restriction.objects.create(name=form.cleaned_data.get('preference'))
@@ -88,7 +91,7 @@ def submit_event(request, slug):
 	else:
 		form = SubmissionForm()
 
-	return render(request, '../templates/submission.html', {'form':form,'submission':submission,'event':event})
+	return render(request, '../templates/submission.html', {'user':user, 'form':form,'submission':submission,'event':event})
 
 def profile_page(request):
 	user = request.user
