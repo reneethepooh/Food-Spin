@@ -113,7 +113,7 @@ def result_page(request,slug):
 	submissions = EventSubmission.objects.filter(event=event)
 	print(submissions)
 
-	for submission in submissions
+	for submission in submissions:
 		restrictions = Restriction.objects.get(submission=event)
 		for restriction in restrictions:
 			print(restriction.name)
