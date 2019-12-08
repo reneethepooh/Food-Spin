@@ -126,9 +126,10 @@ def result_page(request,slug):
 	event_preferences=set(event_preferences)
 	print(event_preferences)
 	result=yelp_call(event.radius,event.location,event_preferences)
+	result = result[0]
 	print(result)
 
-	return render(request,'../templates/successpage.html',{'results':result,'event':event})
+	return render(request,'../templates/successpage.html',{'result':result,'event':event})
 
 
 	
