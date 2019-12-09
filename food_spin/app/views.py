@@ -114,9 +114,6 @@ def profile_page(request):
 def result_page(request,slug):
 	event = Event.objects.get(slug=slug)
 	submissions = EventSubmission.objects.filter(event=event)
-	print(submissions)
-
-
 	event_preferences=[]
 	for submission in submissions:
 		restrictions = Restriction.objects.filter(submission=submission)
@@ -124,7 +121,6 @@ def result_page(request,slug):
 			print(restriction.name)
 			event_preferences.append(restriction.name)
 	event_preferences=set(event_preferences)
-	print(event_preferences)
 	result=yelp_call(event.radius,event.location,event_preferences)
 	# --------------For Reference-------------
 	#result is a list with the following fields=
@@ -134,7 +130,6 @@ def result_page(request,slug):
 	# result[3]= Restaurant Address
 	restaurant = Restaurant.objects.create(event=event,restaurant_name=result[0],image_url=result[1],yelp_url=result[2],address=result[3])
 	restaurant.save()
-	print(result)
 	return render(request,'../templates/successpage.html',{'restaurant':restaurant,'event':event})
 
 
@@ -156,24 +151,21 @@ def yelp_call(radius, location , preferences):
   'location': location.replace(' ', '+'),
   'radius':search_radius
   }
-  
   url = '{0}{1}'.format(API_HOST, quote(SEARCH_PATH.encode('utf8')))
   headers = {
     'Authorization': 'Bearer %s' % yelpapi_key,
   }
   response = requests.request('GET', url, headers=headers, params=parameters)
   restaurant_data=response.json()
+  winner=restaurant_data['businesses'][random.randint(0,18)] #obtain one random restaurant per spin
 
-  randomizer = random.randint(0,18)
-  winner=restaurant_data['businesses'][randomizer]
-
-
+  #Obtain desired fields from json response 
   restaurant_name=winner['name']
   image_url=winner['image_url']
   yelp_url=winner['url']
-  address=' '
-  address=address.join(winner['location']['display_address'])
-
+  address=' '.join(winner['location']['display_address'])
+  
+  #append each field to a python list and return
   results=[]
   results.append(restaurant_name)
   results.append(image_url)
