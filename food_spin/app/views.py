@@ -18,8 +18,8 @@ def spin(request):
 	user = request.user
 	return render(request, '../templates/spin.html', {'user':user})
 
-def result(request):
-	return render(request, '../templates/result.html')
+# def result(request):
+# 	return render(request, '../templates/result.html')
 
 def signup(request):
 	if request.method == 'POST':
