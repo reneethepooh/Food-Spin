@@ -89,7 +89,7 @@ def submit_event(request, slug):
 			form = SubmissionForm(request.POST)
 			event.status = 'Pending'
 			event.save()
-			return redirect ('results',slug=event.slug)
+			return  HttpResponseRedirect('results',slug=event.slug)
 		else:
 			form = SubmissionForm(request.POST)
 			if form.is_valid():
