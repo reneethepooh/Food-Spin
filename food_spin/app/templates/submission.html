@@ -23,7 +23,7 @@
   {{ form.as_p }}
   <input type="submit" value="Submit" id="input-submit">
 </form>
-{% if user == event.host %}
+{% if user.id == event.user_id %}
 <form method='post'>
   {% csrf_token %}
   <input type='submit' value='Done Collecting Submissions' name='conclude'>

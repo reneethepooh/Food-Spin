@@ -2,11 +2,13 @@ from django.http import HttpResponseRedirect
 from .forms import EventForm, RestrictionForm, SubmissionForm
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate, logout
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib import messages
 from app.models import Restriction, Profile, Event, EventSubmission
+from food_spin.routers import bucket_users_into_shards, set_user_for_sharding
 
 def home(request):
 	return render(request, '../templates/intro.html')
@@ -22,10 +24,12 @@ def signup(request):
 	if request.method == 'POST':
 		form = UserCreationForm(data=request.POST)
 		if form.is_valid():
-			form.save()
+			form.save(commit=True)
 			username = form.cleaned_data.get('username')
 			password = form.cleaned_data.get('password1')
 			user = authenticate(username=username, password=password)
+			new_profile = Profile(user_id=user.id)
+			new_profile.save()
 			login(request, user)
 			return redirect('/spin')
 		else:
@@ -55,6 +59,7 @@ def login_request(request):
 	form = AuthenticationForm()
 	return render(request, '../templates/login.html', {'form':form})
 
+@login_required
 def create_event(request):
 	if request.method == 'POST':
 		form = EventForm(request.POST)
@@ -62,8 +67,10 @@ def create_event(request):
 			event_name = form.cleaned_data['event_name']
 			location = form.cleaned_data['location']
 			radius = form.cleaned_data['search_radius']
-			new_event = Event.objects.create(name=event_name, location=location, radius=radius, host=request.user)
-			new_submission = EventSubmission.objects.create(user=request.user, event=new_event)
+			new_event = Event(name=event_name, location=location, radius=radius, user_id=request.user.id)
+			new_event.save()
+			new_submission = EventSubmission(user_id=request.user.id, event_id=new_event.id)
+			new_submission.save()
 			return redirect('submission', slug=new_event.slug)
 		else:
 			messages.error(request, 'Invalid event creation')
@@ -71,38 +78,58 @@ def create_event(request):
 		form = EventForm()
 	return render(request, '../templates/createevent.html', {'form':form})
 
+@login_required
 def submit_event(request, slug):
 	user = request.user
-	event = Event.objects.get(slug=slug)
+	event_host_id = int(slug.split('-')[2])
+	shards_to_query = bucket_users_into_shards([event_host_id])
+	shardid = 0 
+	event = None
+
+	# This is shady, but basically theres only going to be 1
+	# match for the event we're looking for
+	for shard, id in shards_to_query.items():
+		event = Event.objects.filter(slug__in=[slug])
+		set_user_for_sharding(event, shard)
+		shardid = shard
+		event = event.first()
+
 	url = request.get_full_path()
 
 	try:
-		submission = EventSubmission.objects.get(user=user, event=event)
+		set_user_for_sharding(EventSubmission.objects, shardid)
+		submission = EventSubmission.objects.get(user_id=user.id, event_id=event.id)
 	except EventSubmission.DoesNotExist:
-		submission = EventSubmission.objects.create(user=user, event=event)
+		submission = EventSubmission(user_id=user.id, event_id=event.id)
+		submission.save()
 
 	if request.method == 'POST':
 		if 'conclude' in request.POST:
-			form = SubmissionForm(request.POST)
+			form = SubmissionForm()
 			event.status = 'Pending'
 			event.save()
 		else:
 			form = SubmissionForm(request.POST)
 			if form.is_valid():
-				new_preference = Restriction.objects.create(name=form.cleaned_data.get('preference'))
+				new_preference = Restriction(name=form.cleaned_data.get('preference'), user_id=user.id)
+				new_preference.save()
 				submission.preferences.add(new_preference)
 	else:
 		form = SubmissionForm()
-	return render(request, '../templates/submission.html', {'url':url, 'user':user, 'form':form,'submission':submission,'event':event})
+	return render(request, '../templates/submission.html', {'url':url, 'user':user, 'form':form, 'submission':submission, 'event':event})
 
+@login_required
 def profile_page(request):
 	user = request.user
-	profile = user.profile
+	profile_query = Profile.objects
+	set_user_for_sharding(profile_query, user.id)
+	profile = Profile.objects.get(user_id=user.id)
 	if request.method == 'POST':
 		form = RestrictionForm(request.POST)
 		if form.is_valid():
-			new_preference = Restriction.objects.create(name=form.cleaned_data.get('restriction'))
-			profile.restrictions.add(new_preference)
+			new_pref = Restriction(name=form.cleaned_data.get('restriction'), user_id=user.id)
+			new_pref.save()
+			profile.restrictions.add(new_pref)
 	else:
 		form = RestrictionForm()
 	return render(request, '../templates/profile.html', {'profile':profile,'form':form,'user':user})
