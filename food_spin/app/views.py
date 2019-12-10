@@ -123,7 +123,7 @@ def result_page(request,slug):
 	event_preferences=set(event_preferences)
 	result=yelp_call(event.radius,event.location,event_preferences)
 	# --------------For Reference-------------
-	#result is a list with the following fields=
+	#result is a list wich contains the following fields=
 	# result[0]=Restaurant Name
 	# result[1]= Url to an image of the restaurant
 	# result[2]= URL to yelp for reservation
