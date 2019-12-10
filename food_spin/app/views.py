@@ -78,7 +78,8 @@ def submit_event(request, slug):
 	user = request.user
 	event = Event.objects.get(slug=slug)
 	url = request.get_full_path()
-
+	if (event.status == 'Pending'):
+		return  redirect('results',slug=event.slug)
 	try:
 		submission = EventSubmission.objects.get(user=user, event=event)
 	except EventSubmission.DoesNotExist:
