@@ -4,22 +4,19 @@
   <meta charset="UTF-8">
   <title>Success</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/5.0.0/normalize.min.css">
-<link rel="stylesheet" href="./successpagestyle.css">
-
+  <link rel="stylesheet" href="../../static/css/introstyle.css">
 </head>
 <body>
 <!-- partial:index.partial.html -->
-<main>
-  <h1>Your Event is Successfully Created!</h1>
 
-  <p>Click here to copy <a href="" class="copy-click" data-tooltip-text="Click to copy" data-tooltip-text-copied="✔ Copied to clipboard">OUR LINK</a> to share with your friends.</p>
 
-</br></br>
-<button type="submit" class="btn btn-default"><a href = "sharable.html">What's your preference today?</a></button>
+  <h1>Your Event is Successfully Created! {{event.name}} should go to the following restaurant: </h1>
+  
+  <h2>{{restaurant.restaurant_name}}</h2>
+  <img src={{restaurant.image_url}}>
+  <p style="font-size:30px;">Location: {{restaurant.address}}</p><br>
+  <p style="font-size:30px;">Reserve the restaurant by clicking the following <a href={{restaurant.yelp_url}}>LINK</a></p>
 
-</main>
 <!-- partial -->
-  <script  src="./successpagescript.js"></script>
-
 </body>
 </html>

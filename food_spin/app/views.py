@@ -7,8 +7,10 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.urls import reverse_lazy
 from django.views import generic
 from django.contrib import messages
-from app.models import Restriction, Profile, Event, EventSubmission
+from app.models import Restriction, Profile, Event, EventSubmission, Restaurant
 from food_spin.routers import bucket_users_into_shards, set_user_for_sharding
+import requests
+from urllib.parse import quote
 
 def home(request):
 	return render(request, '../templates/intro.html')
@@ -85,7 +87,7 @@ def submit_event(request, slug):
 	shards_to_query = bucket_users_into_shards([event_host_id])
 	shardid = 0 
 	event = None
-
+	
 	# This is shady, but basically theres only going to be 1
 	# match for the event we're looking for
 	for shard, id in shards_to_query.items():
@@ -93,6 +95,9 @@ def submit_event(request, slug):
 		set_user_for_sharding(event, shard)
 		shardid = shard
 		event = event.first()
+
+	if (event.status == 'Pending'):
+		return redirect('results',slug=event.slug)
 
 	url = request.get_full_path()
 
@@ -133,3 +138,74 @@ def profile_page(request):
 	else:
 		form = RestrictionForm()
 	return render(request, '../templates/profile.html', {'profile':profile,'form':form,'user':user})
+
+def result_page(request, slug):
+	event_host_id = int(slug.split('-')[2])
+	shards_to_query = bucket_users_into_shards([event_host_id])
+	shardid = 0 
+	event = None
+
+	# This is shady, but basically theres only going to be 1
+	# match for the event we're looking for
+	for shard, id in shards_to_query.items():
+		event = Event.objects.filter(slug__in=[slug])
+		set_user_for_sharding(event, shard)
+		shardid = shard
+		event = event.first()
+		
+	set_user_for_sharding(EventSubmission.objects, shardid)
+	submissions = EventSubmission.objects.filter(event_id=event.id)
+
+	event_preferences=[]
+	for submission in submissions:
+		set_user_for_sharding(Restriction.objects, shardid)
+		restrictions = Restriction.objects.filter(submission=submission)
+		for restriction in restrictions:
+			print(restriction.name)
+			event_preferences.append(restriction.name)
+	event_preferences=set(event_preferences)
+
+	set_user_for_sharding(Restaurant.objects, shardid)
+	result = yelp_call(event.radius,event.location,event_preferences)
+	restaurant = Restaurant(user_id=shardid, event=event,restaurant_name=result[0],image_url=result[1],yelp_url=result[2],address=result[3])
+	restaurant.save()
+
+	return render(request,'../templates/successpage.html',{'restaurant':restaurant,'event':event})
+
+def yelp_call(radius, location , preferences):
+  yelpapi_key="jsF4Y56oGgdh4JFCZabwwDxxbOJtRJXWL7aI1GP90Gb36w49rxZLwAhoybma_hTqFZl1YXzmFyyY4-JE1XEm6T2r5eAjkoKG7L2U9ovk4tDgWs3Fmw1ty__KkBPLXXYx" 
+  yelp_url="https://api.yelp.com/v3/businesses/search" 
+  API_HOST = 'https://api.yelp.com' 
+  SEARCH_PATH = '/v3/businesses/search'
+
+  empty_pref=" "
+  term = empty_pref.join(preferences)
+  location = location
+  search_radius=radius # search_radius in meters
+  parameters={
+  'term': term.replace(' ', '+'),
+  'location': location.replace(' ', '+')
+#   'radius':search_radius
+  }
+  url = '{0}{1}'.format(API_HOST, quote(SEARCH_PATH.encode('utf8')))
+  headers = {
+    'Authorization': 'Bearer %s' % yelpapi_key,
+  }
+  response = requests.request('GET', url, headers=headers, params=parameters)
+  restaurant_data=response.json()
+  winner=restaurant_data['businesses'][0] #obtain one random restaurant per spin
+
+  #Obtain desired fields from json response 
+  restaurant_name=winner['name']
+  image_url=winner['image_url']
+  yelp_url=winner['url']
+  address=' '.join(winner['location']['display_address'])
+  
+  #append each field to a python list and return
+  results=[]
+  results.append(restaurant_name)
+  results.append(image_url)
+  results.append(yelp_url)
+  results.append(address)
+
+  return results

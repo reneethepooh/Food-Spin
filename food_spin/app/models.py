@@ -30,4 +30,12 @@ class Event(models.Model):
 class EventSubmission(models.Model):
 	user_id = models.BigIntegerField(db_index=True)
 	event_id = models.BigIntegerField(db_index=True)
-	preferences = models.ManyToManyField(Restriction)
+	preferences = models.ManyToManyField(Restriction, related_name='submission')
+
+class Restaurant(models.Model):
+	event = models.ForeignKey(Event, on_delete=models.CASCADE, related_name='restaurant')
+	restaurant_name = models.TextField(default='')
+	image_url = models.TextField(default='')
+	yelp_url = models.TextField(default='')
+	address = models.TextField(default='')
+	user_id = models.BigIntegerField(db_index=True)
