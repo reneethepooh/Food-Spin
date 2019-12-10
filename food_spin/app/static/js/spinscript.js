@@ -6,7 +6,7 @@ var clicks = 0;
 $(document).ready(function(){
 	
 	/*WHEEL SPIN FUNCTION*/
-	$('#spin').click(function(){
+	$('#spinbutton').click(function(){
 		
 		//add 1 every click
 		clicks ++;
