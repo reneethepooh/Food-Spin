@@ -86,7 +86,7 @@ def submit_event(request, slug):
 		submission = EventSubmission.objects.create(user=user, event=event)
 
 	if request.method == 'POST':
-		if 'conclude' in request.POST:
+		if 'conclude' in request.POST or event.status == 'Pending':
 			form = SubmissionForm(request.POST)
 			event.status = 'Pending'
 			event.save()
@@ -149,8 +149,8 @@ def yelp_call(radius, location , preferences):
   search_radius=radius # search_radius in meters
   parameters={
   'term': term.replace(' ', '+'),
-  'location': location.replace(' ', '+'),
-  'radius':search_radius
+  'location': location.replace(' ', '+')
+#   'radius':search_radius
   }
   url = '{0}{1}'.format(API_HOST, quote(SEARCH_PATH.encode('utf8')))
   headers = {
