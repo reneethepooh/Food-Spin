@@ -74,14 +74,7 @@ WSGI_APPLICATION = 'food_spin.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-	'OPTIONS': {
-	  'read_default_file': os.path.join(BASE_DIR, '..', 'db', 'my.cnf'),
-	},
-    }
-}
+exec(compile(open(os.path.join(BASE_DIR, '..', 'db', 'db_settings.py'), "rb").read(),  os.path.join(BASE_DIR, '..', 'db', 'db_settings.py'), 'exec'))
 
 
 # Password validation
